@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
-import styles from "../../styles/Home.module.css";
+import Head from "next/head";
+// import styles from "../../styles/Home.module.css";
 import client from "../../apollo/client";
 import { GET_POSTS, GET_TOTAL_COUNT } from "../../gql/getPosts";
 import { PER_PAGE_FIRST, PER_PAGE_REST } from "../../constants";
@@ -12,31 +13,34 @@ const Home = ({ data, loading, networkStatus }) => {
    const pagesCount = Math.ceil((totalPostsCount - PER_PAGE_FIRST) / PER_PAGE_REST + 1);
    const pageNo = router?.query?.page_no ?? 0;
    return (
-      <div className={styles.container}>
-         {loading
-            ? "Loading..."
-            : (nodes || []).map((post) => {
-                 const { id, title } = post || {};
-                 return <div key={id}>{post?.title ?? ""}</div>;
-              })}
-         <div style={{ display: "flex" }}>
-            {new Array(pagesCount).fill().map((_, index) => {
-               return (
-                  <Link href="/posts/[page_no]" as={`/posts/${index + 1}`}>
-                     <a
-                        className={
-                           pageNo == index + 1
-                              ? `${styles.page_no} ${styles.selected}`
-                              : styles.page_no
-                        }
-                     >
-                        {index + 1}
-                     </a>
-                  </Link>
-               );
-            })}
+      <>
+         <Head>
+            <link rel="stylesheet" type="text/css" href="/css/style.css" />
+         </Head>
+         <div className="container">
+            {loading
+               ? "Loading..."
+               : (nodes || []).map((post) => {
+                    const { id, title } = post || {};
+                    return (
+                       <div className="post" key={id}>
+                          {post?.title ?? ""}
+                       </div>
+                    );
+                 })}
+            <div style={{ display: "flex" }}>
+               {new Array(pagesCount).fill().map((_, index) => {
+                  return (
+                     <Link href="/posts/[page_no]" as={`/posts/${index + 1}`}>
+                        <a className={pageNo == index + 1 ? "page_no selected" : "page_no"}>
+                           {index + 1}
+                        </a>
+                     </Link>
+                  );
+               })}
+            </div>
          </div>
-      </div>
+      </>
    );
 };
 

@@ -17,7 +17,7 @@ const App = ({ Component, pageProps, data }) => {
    return (
       <>
          <Head>
-            <link rel="stylesheet" type="text/css" href="/static/css/nprogress.css" />
+            <link rel="stylesheet" type="text/css" href="/css/nprogress.css" />
          </Head>
          <ApolloProvider client={client}>
             <Component {...pageProps} />
