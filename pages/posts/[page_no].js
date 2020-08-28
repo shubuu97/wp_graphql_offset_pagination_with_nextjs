@@ -13,7 +13,6 @@ const Home = ({ data, loading, networkStatus }) => {
    const pageNo = router?.query?.page_no ?? 0;
    return (
       <div className={styles.container}>
-         <p>Page: {pageNo}</p>
          {loading
             ? "Loading..."
             : (nodes || []).map((post) => {
@@ -24,7 +23,15 @@ const Home = ({ data, loading, networkStatus }) => {
             {new Array(pagesCount).fill().map((_, index) => {
                return (
                   <Link href="/posts/[page_no]" as={`/posts/${index + 1}`}>
-                     <a style={{ cursor: "pointer", marginRight: "10px" }}>{index + 1}</a>
+                     <a
+                        className={
+                           pageNo == index + 1
+                              ? `${styles.page_no} ${styles.selected}`
+                              : styles.page_no
+                        }
+                     >
+                        {index + 1}
+                     </a>
                   </Link>
                );
             })}
