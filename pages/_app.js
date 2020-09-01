@@ -1,7 +1,10 @@
 import { ApolloProvider } from "@apollo/client";
 import Router from "next/router";
 import Head from "next/head";
+import App from "next/app";
 import NProgress from "nprogress";
+import Layout from "../components/Layout";
+import { GET_MENUS } from "../gql/getMenus";
 import client from "../apollo/client";
 import "../styles/globals.css";
 
@@ -13,17 +16,35 @@ Router.events.on("routeChangeStart", (url) => {
 Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
 
-const App = ({ Component, pageProps, data }) => {
-   return (
-      <>
-         <Head>
-            <link rel="stylesheet" type="text/css" href="/static/css/nprogress.css" />
-         </Head>
-         <ApolloProvider client={client}>
-            <Component {...pageProps} />
-         </ApolloProvider>
-      </>
-   );
-};
+class MyApp extends App {
+   static async getInitialProps({ req, Component, ctx }) {
+      let pageProps = {};
+      if (Component.getInitialProps) {
+         pageProps = await Component.getInitialProps(ctx);
+      }
 
-export default App;
+      const { data, loading, networkStatus } = await client.query({
+         query: GET_MENUS,
+      });
+
+      return { pageProps, menus: data?.headerMenus?.edges ?? [] };
+   }
+
+   render() {
+      const { Component, pageProps, menus } = this.props;
+      return (
+         <>
+            <Head>
+               <link rel="stylesheet" type="text/css" href="/static/css/nprogress.css" />
+            </Head>
+            <ApolloProvider client={client}>
+               <Layout menus={menus}>
+                  <Component {...pageProps} menus={menus} />
+               </Layout>
+            </ApolloProvider>
+         </>
+      );
+   }
+}
+
+export default MyApp;
