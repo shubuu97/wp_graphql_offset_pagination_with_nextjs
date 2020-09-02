@@ -1,10 +1,10 @@
 import React from "react";
 import { useRouter } from "next/router";
-import Layout from "../components/Layout";
-import { GET_MENUS } from "../gql/getMenus";
-import client from "../apollo/client";
+import Layout from "../../components/Layout";
+import { GET_MENUS } from "../../gql/getMenus";
+import client from "../../apollo/client";
 
-const Menu = ({ menus }) => {
+const Category = ({ menus }) => {
    const router = useRouter();
    const slug = router.query.slug;
    return (
@@ -20,13 +20,13 @@ const Menu = ({ menus }) => {
                fontWeight: "bold",
             }}
          >
-            {slug}
+            Hello {slug}
          </div>
       </Layout>
    );
 };
 
-export default Menu;
+export default Category;
 
 export async function getServerSideProps({ params }) {
    const { data, loading, networkStatus } = await client.query({
