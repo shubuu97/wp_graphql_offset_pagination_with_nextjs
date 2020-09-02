@@ -2,8 +2,19 @@ import React from "react";
 import Link from "next/link";
 
 const PATH_TO_REPLACE = "/wordpress_woo";
+const DEFAULT_PATH_LENGTH = 4;
 
 const Layout = ({ menus, children }) => {
+   const menuItems1 = [];
+   const menuItems2 = [];
+   menus.forEach((menu) => {
+      const pathLength = (menu?.node?.path ?? "").split("/").length;
+      if (pathLength === DEFAULT_PATH_LENGTH) {
+         menuItems1.push(menu);
+         return;
+      }
+      menuItems2.push(menu);
+   });
    return (
       <div>
          <header>
@@ -14,102 +25,44 @@ const Layout = ({ menus, children }) => {
                   marginTop: "50px",
                }}
             >
-               <Link
-                  key={menus[0]?.node?.id ?? ""}
-                  href="/[...slug]"
-                  as={menus[0].node.path.replace(PATH_TO_REPLACE, "")}
-               >
-                  <a
-                     style={{
-                        fontSize: "18px",
-                        color: "blue",
-                        textDecoration: "none",
-                        marginRight: "10px",
-                     }}
-                  >
-                     {menus[0].node.label}
-                  </a>
-               </Link>
-               <Link
-                  key={menus[1]?.node?.id ?? ""}
-                  href="/[...slug]"
-                  as={menus[1].node.path.replace(PATH_TO_REPLACE, "")}
-               >
-                  <a
-                     style={{
-                        fontSize: "18px",
-                        color: "blue",
-                        textDecoration: "none",
-                        marginRight: "10px",
-                     }}
-                  >
-                     {menus[1].node.label}
-                  </a>
-               </Link>
-               <Link
-                  key={menus[2]?.node?.id ?? ""}
-                  href="/[...slug]"
-                  as={menus[2].node.path.replace(PATH_TO_REPLACE, "")}
-               >
-                  <a
-                     style={{
-                        fontSize: "18px",
-                        color: "blue",
-                        textDecoration: "none",
-                        marginRight: "10px",
-                     }}
-                  >
-                     {menus[2].node.label}
-                  </a>
-               </Link>
-               <Link
-                  key={menus[3]?.node?.id ?? ""}
-                  href="/[...slug]"
-                  as={menus[3].node.path.replace(PATH_TO_REPLACE, "")}
-               >
-                  <a
-                     style={{
-                        fontSize: "18px",
-                        color: "blue",
-                        textDecoration: "none",
-                        marginRight: "10px",
-                     }}
-                  >
-                     {menus[3].node.label}
-                  </a>
-               </Link>
-               <Link
-                  key={menus[4]?.node?.id ?? ""}
-                  href="/[...slug]"
-                  as={menus[4].node.path.replace(PATH_TO_REPLACE, "")}
-               >
-                  <a
-                     style={{
-                        fontSize: "18px",
-                        color: "blue",
-                        textDecoration: "none",
-                        marginRight: "10px",
-                     }}
-                  >
-                     {menus[4].node.label}
-                  </a>
-               </Link>
-               <Link
-                  key={menus[5]?.node?.id ?? ""}
-                  href="/category/[...slug]"
-                  as={menus[5].node.path.replace(PATH_TO_REPLACE, "")}
-               >
-                  <a
-                     style={{
-                        fontSize: "18px",
-                        color: "blue",
-                        textDecoration: "none",
-                        marginRight: "10px",
-                     }}
-                  >
-                     {menus[5].node.label}
-                  </a>
-               </Link>
+               {(menuItems1 || []).map((menu) => {
+                  const path = menu.node.path.replace(PATH_TO_REPLACE, "");
+                  const href = "[...slug]";
+                  return (
+                     <Link key={menu?.node?.id ?? ""} href={href} as={path}>
+                        <a
+                           style={{
+                              fontSize: "18px",
+                              color: "blue",
+                              textDecoration: "none",
+                              marginRight: "10px",
+                           }}
+                        >
+                           {menu.node.label}
+                           {href}
+                        </a>
+                     </Link>
+                  );
+               })}
+               {(menuItems2 || []).map((menu) => {
+                  const path = menu.node.path.replace(PATH_TO_REPLACE, "");
+                  const href = "/category/[...slug]";
+                  return (
+                     <Link key={menu?.node?.id ?? ""} href={href} as={path}>
+                        <a
+                           style={{
+                              fontSize: "18px",
+                              color: "blue",
+                              textDecoration: "none",
+                              marginRight: "10px",
+                           }}
+                        >
+                           {menu.node.label}
+                           {href}
+                        </a>
+                     </Link>
+                  );
+               })}
             </div>
          </header>
          {children}
