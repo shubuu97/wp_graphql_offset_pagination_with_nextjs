@@ -1,11 +1,26 @@
 import React from "react";
+import Layout from "../components/Layout";
+import { GET_MENUS } from "../gql/getMenus";
+import client from "../apollo/client";
 
-const Home = () => {
+const Home = ({ menus }) => {
    return (
-      <div style={{ margin: "50px", justifyContent: "center", display: "flex", fontSize: "60px" }}>
-         Welcome!
-      </div>
+      <Layout menus={menus}>
+         <div
+            style={{ margin: "50px", justifyContent: "center", display: "flex", fontSize: "60px" }}
+         >
+            Welcome!
+         </div>
+      </Layout>
    );
 };
 
 export default Home;
+
+export async function getServerSideProps({}) {
+   const { data, loading, networkStatus } = await client.query({
+      query: GET_MENUS,
+   });
+
+   return { props: { menus: data?.headerMenus?.edges ?? [] } };
+}
