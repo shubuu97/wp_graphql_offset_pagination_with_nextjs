@@ -16,3 +16,30 @@ export const GET_POSTS = gql`
     }
   }
 `;
+
+export const GET_PAGINATED_POSTS = gql`
+  query getPaginatedPosts($perPage: Int, $offset: Int) {
+    posts(where: { offsetPagination: { size: $perPage, offset: $offset } }) {
+      pageInfo {
+        offsetPagination {
+          total
+        }
+      }
+      nodes {
+        title
+      }
+    }
+  }
+`;
+
+export const GET_TOTAL_POSTS_COUNT = gql`
+  query getTotalPostsCount {
+    posts {
+      pageInfo {
+        offsetPagination {
+          total
+        }
+      }
+    }
+  }
+`;

@@ -1,3 +1,15 @@
+.home_container {
+	display: flex;
+	justify-content: center;
+	margin-top: 50px;
+}
+
+.home_link {
+	font-size: 32px;
+	color: blue;
+	text-decoration: none
+}
+
 .container {
 	min-height: 100vh;
 	padding: 0 0.5rem;
@@ -27,7 +39,24 @@
 	padding: 5px 10px;
 }
 
+.load_more_btn {
+	padding: 8px 18px;
+    border: 1px solid #000;
+    background-color: #000;
+    color: #fff;
+	font-size: 16px;
+	margin: 20px 0px;
+}
+
+.load_more_btn:hover {
+	cursor: pointer;
+}
+
 .selected {
 	color: #fff;
 	background: #000;
+}
+
+.pagination {
+	display: none;
 }
